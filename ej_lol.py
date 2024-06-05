@@ -2,12 +2,11 @@ import time
 import os
 import csv
 
-
 try:
-    titulos = ["identificador", "nombre", "anio de lanzamiento"]
-    with open("campeones_lol.csv", "x", newline="") as archivo:
+    titulos = ["id", 'nombre', 'anio de lanzamiento']
+    with open('campeones_lol.csv', 'x', newline='') as archivo:
         escritor = csv.writer(archivo)
-        escritor.writerows(titulos)
+        escritor.writerow(titulos)
 except:
     pass
 
@@ -82,9 +81,60 @@ while True:
 
         campeon_agregar = [identificador, nombre, anio]
 
-    elif opc == 2:
-        pass
+        with open('campeones_lol.csv', "r+", newline='') as archivo:
+            lector = csv.reader(archivo)
+            matriz = []
+            for x in lector:
+                matriz.append(x)
+            matriz.append(campeon_agregar)
 
+            escritor = csv.writer(archivo)
+            escritor.writerows(matriz)
+        print('CAMPEÓN AGREGADO!')
+
+        with open('campeones_lol.csv', "r+", newline="") as archivo:
+            escritor = csv.writer(archivo)
+            if len(matriz) >= 2:
+                if campeon_agregar in matriz:
+                    posicion = matriz.index(campeon_agregar)
+                    print('EL CAMPEON YA SE ENCUENTRA REGISTRADO!')
+                    time.sleep(1)
+                    os.system('cls')
+                matriz.pop(posicion)
+
+                escritor = csv.writer(archivo)
+                escritor.writerows(matriz)
+
+        print('CAMPEÓN ELIMINADO!')
+        time.sleep(1)
+
+    elif opc == 2:
+        print('Ver informacion champs!')
+        time.sleep(1)
+        os.system('cls')
+
+        while True:
+            os.system('cls')
+            with open('campeones_lol.csv', "r", newline="") as archivo:
+                lector = csv.reader(archivo)
+                for champ in lector:
+                    print(champ)
+
+            opc_ver = str(
+                input('Deseas salir? Ingrese("S": salir)("N": redirigir): '))
+            if opc_ver.upper() == "S":
+                print('Saliendo.')
+                time.sleep(1)
+                os.system('cls')
+                break
+            elif opc_ver.upper() == "N":
+                print('Redirigiendo.')
+                time.sleep(1)
+                os.system('cls')
+            else:
+                print(
+                    'ERROR! debe ingresar una opción valida, opciones valida("S" o "N")')
+            time.sleep(1)
     else:
         for q in range(1, 4):
             print('Saliendo de app champs lol', ('.'*q))
